@@ -2600,6 +2600,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "XRI State",
+            "id": "547f6a50-e1b7-47ce-84f9-b7e24835e8bb",
+            "actions": [
+                {
+                    "name": "Hand Trigger Click",
+                    "type": "Button",
+                    "id": "1b9bcaf0-74ef-432a-b8d8-d2e7af280330",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "49543ecc-7bb3-4bc5-a8a8-35d7662d6c54",
+                    "path": "<XRController>{LeftHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Hand Trigger Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cef5f045-e1cb-4569-9353-6f7116d72fef",
+                    "path": "<XRController>{RightHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Hand Trigger Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
