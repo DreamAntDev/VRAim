@@ -14,4 +14,4 @@ GitHub Issue : https://github.com/DreamAntDev/VRAim/issues
 
 
 ## 라이선스
-This library is under the [MIT](https://github.com/DreamAntDev/TowerDefense?tab=MIT-1-ov-file) License.
+This library is under the [MIT](https://github.com/DreamAntDev/VRAim?tab=MIT-1-ov-file) License.
