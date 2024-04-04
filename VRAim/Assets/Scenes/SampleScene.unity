@@ -1063,18 +1063,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 30559341}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &191802564 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3127728408163665757, guid: 895f6f3c2d334633b5800312285058d2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1731298970}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017c5e3933235514c9520e1dace2a4b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &599916901
 GameObject:
   m_ObjectHideFlags: 0
@@ -1138,7 +1126,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3f9336a53d1d2ea43895699cc52cb411, type: 2}
+  - {fileID: 2100000, guid: bb782b05687ac1f47a614de6def3897d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1318,13 +1306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2207ea36664723442a94394fc9991c4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tmp_State: {fileID: 25133804}
-  tmp_Count: {fileID: 2065348132}
-  btn_Start: {fileID: 1822096540}
-  targetParentTransform: {fileID: 2011350788}
-  targetObject: {fileID: 8560377200886886933, guid: 53f0bab1ff3b34e4f80f7becd8cdc8d9,
-    type: 3}
-  inputActionManager: {fileID: 191802564}
 --- !u!20 &1023407423 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 9014170783809206330, guid: 895f6f3c2d334633b5800312285058d2,
