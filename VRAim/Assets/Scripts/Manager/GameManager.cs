@@ -1,16 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Robotry.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 public class GameManager : Singleton<GameManager>
 {
+    [Header("Option")] [SerializeField] private int respawnCount = 16;
+    [Space(10)] 
+    
     [Header("UI Component")] 
     [SerializeField] private TextMeshProUGUI tmp_State;
     [SerializeField] private TextMeshProUGUI tmp_Count;
@@ -28,15 +29,16 @@ public class GameManager : Singleton<GameManager>
     private InputActionAsset _inputActionAsset;
     
     private List<TestInteraction> _targetList;
-    private bool _isGameStart;
-    public bool IsGameStart => _isGameStart;
+    public bool IsGameStart { get; private set; }
 
     private GameObject _currentHoverObject;
-    private int breakCount = 0;
+    private int _breakCount;
+    private ITargetInfo _targetInfo;
 
     private void Awake()
     {
         _targetList = new List<TestInteraction>();
+        _targetInfo = new TargetInfo();
     }
 
     private void Start()
@@ -82,12 +84,12 @@ public class GameManager : Singleton<GameManager>
         {
             tmp_State.text = "Trigger On";
             Debug.Log("Trigger On");
-            if (_isGameStart)
+            if (IsGameStart)
             {
                 if (_currentHoverObject != null)
                 {
                     _currentHoverObject.gameObject.SetActive(false);
-                    tmp_Count.text = $"Count - {++breakCount}";
+                    tmp_Count.text = $"Count - {++_breakCount}";
                     CreateTarget();
                 }
             }
@@ -111,10 +113,10 @@ public class GameManager : Singleton<GameManager>
     
     public void GameStart()
     {
-        if (_isGameStart)
+        if (IsGameStart)
             return;
         
-        _isGameStart = true;
+        IsGameStart = true;
         tmp_State.text = String.Empty;
         tmp_State.text = "GameStart";
         CreateTarget();
@@ -123,7 +125,7 @@ public class GameManager : Singleton<GameManager>
     private void CreateTarget()
     {
         tmp_State.text = "Target Shoot!!";
-        GameObject targetObj = Instantiate(targetObject, Camera.main.transform.position - Camera.main.transform.forward * 3f, Quaternion.identity, targetParentTransform);
+        GameObject targetObj = Instantiate(targetObject, Camera.main.transform.position - (Quaternion.Euler(0f, _targetInfo.GetTargetAngle(respawnCount), 0f) * Camera.main.transform.forward * 3f), Quaternion.identity, targetParentTransform);
         TestInteraction ti = targetObj.GetComponent<TestInteraction>();
         ti.itemHoverEnteredAction += OnHoverEnteredListener;
         ti.itemHoverExitedAction += OnHoverExitedListener;
@@ -139,7 +141,5 @@ public class GameManager : Singleton<GameManager>
     {
         if (_currentHoverObject == obj)
             _currentHoverObject = null;
-            
     }
-    
 }
