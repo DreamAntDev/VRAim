@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Robotry.Utils;
 using TMPro;
 using UnityEngine;
@@ -9,12 +11,15 @@ using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 public class GameManager : Singleton<GameManager>
 {
-    [Header("Option")] [SerializeField] private int respawnCount = 16;
+    [Header("Option")] 
+    [SerializeField] private double playTime = 300f;
+    [SerializeField] private int respawnCount = 16;
     [Space(10)] 
     
     [Header("UI Component")] 
     [SerializeField] private TextMeshProUGUI tmp_State;
     [SerializeField] private TextMeshProUGUI tmp_Count;
+    [SerializeField] private TextMeshProUGUI tmp_StartAndTimer;
     [SerializeField] private Button btn_Start;
     [Space(10)] 
     
@@ -119,7 +124,15 @@ public class GameManager : Singleton<GameManager>
         IsGameStart = true;
         tmp_State.text = String.Empty;
         tmp_State.text = "GameStart";
+        StartCoroutine(Timer());
         CreateTarget();
+    }
+
+    public void GameEnd()
+    {
+        IsGameStart = false;
+        tmp_State.text = $"GameEnd Count : " + _breakCount;
+        tmp_StartAndTimer.text = "Start";
     }
 
     private void CreateTarget()
@@ -141,5 +154,25 @@ public class GameManager : Singleton<GameManager>
     {
         if (_currentHoverObject == obj)
             _currentHoverObject = null;
+    }
+
+    IEnumerator Timer()
+    {
+        var currentTime = playTime;
+        TimeSpan timeSpan;
+        while (currentTime > 0)
+        {
+            currentTime -=  1;
+            timeSpan = TimeSpan.FromSeconds(currentTime);
+            tmp_StartAndTimer.text = timeSpan.ToString(@"mm\:ss");
+            yield return new WaitForSeconds(1);
+
+            if (Mathf.Approximately((float)currentTime, 0))
+            {
+                Debug.Log("Timer End");
+                GameEnd();
+                break;
+            }
+        }
     }
 }

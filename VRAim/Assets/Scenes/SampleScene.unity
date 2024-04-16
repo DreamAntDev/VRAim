@@ -1325,9 +1325,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5641907ba3abc7848b5b531c96933323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playTime: 300
   respawnCount: 16
   tmp_State: {fileID: 1501723703}
   tmp_Count: {fileID: 2065348132}
+  tmp_StartAndTimer: {fileID: 0}
   btn_Start: {fileID: 1822096540}
   targetParentTransform: {fileID: 2011350788}
   targetObject: {fileID: 8560377200886886933, guid: ecca1baa2dd7bb04ea4fd2a6c9a0dadb,
