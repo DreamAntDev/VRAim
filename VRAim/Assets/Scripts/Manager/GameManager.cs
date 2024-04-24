@@ -15,6 +15,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Option")] 
     [SerializeField] private double playTime = 300f;
     [SerializeField] private int respawnCount = 16;
+    [SerializeField] private float targetActiveTime = 5f;
     [Space(10)] 
     
     [Header("UI Component")] 
@@ -37,7 +38,7 @@ public class GameManager : Singleton<GameManager>
     private List<TestInteraction> _targetList;
     public bool IsGameStart { get; private set; }
 
-    private IXRHoverInteractor _currentXRHoverObject;
+    private TestInteraction _currentXRHoverObject;
     private int _breakCount;
     private ITargetInfo _targetInfo;
 
@@ -93,7 +94,6 @@ public class GameManager : Singleton<GameManager>
             if (IsGameStart)
             {
                 OnTargetTriggerListener();
-                
             }
         });
         hand_InputAction.canceled += (ctx =>
@@ -147,28 +147,53 @@ public class GameManager : Singleton<GameManager>
     public void GameEnd()
     {
         IsGameStart = false;
-        tmp_State.text = $"GameEnd Count : " + _breakCount;
+        tmp_State.text = $"GameEnd Count : {_breakCount}";
         tmp_StartAndTimer.text = "Start";
     }
 
+    public void RespawnTarget(TestInteraction interaction)
+    {
+        bool isActiveTarget = false;
+        foreach (var nextTarget in _targetList)
+        {
+            if(nextTarget == interaction)
+                continue;
+
+            if (!nextTarget.gameObject.activeSelf)
+            {
+                isActiveTarget = true;
+                tmp_State.text = "Target Shoot!!";
+                nextTarget.transform.position = TargetPosition();
+                nextTarget.gameObject.SetActive(true);
+                break;
+            }
+        }
+        
+        if(!isActiveTarget)
+            CreateTarget();
+        
+        interaction.gameObject.SetActive(false);
+    }
+    
     private void CreateTarget()
     {
         tmp_State.text = "Target Shoot!!";
-        GameObject targetObj = Instantiate(targetObject, Camera.main.transform.position - (Quaternion.Euler(0f, _targetInfo.GetTargetAngle(respawnCount), 0f) * Camera.main.transform.forward * 3f), Quaternion.identity, targetParentTransform);
+        GameObject targetObj = Instantiate(targetObject, TargetPosition(), Quaternion.identity, targetParentTransform);
         TestInteraction ti = targetObj.GetComponent<TestInteraction>();
         ti.itemHoverEnteredAction += OnHoverEnteredListener;
         ti.itemHoverExitedAction += OnHoverExitedListener;
         _targetList.Add(ti);
     }
-    private void OnHoverEnteredListener(IXRHoverInteractor ixrHoverInteractor)
+    
+    private void OnHoverEnteredListener(TestInteraction interaction)
     {
-        _currentXRHoverObject = ixrHoverInteractor;
-        tmp_State.text = "Hover Target - " + ixrHoverInteractor.transform.name;
+        _currentXRHoverObject = interaction;
+        tmp_State.text = "Hover Target - " + interaction.transform.name;
     }
     
-    private void OnHoverExitedListener(IXRHoverInteractor ixrHoverInteractor)
+    private void OnHoverExitedListener(TestInteraction interaction)
     {
-        if (_currentXRHoverObject == ixrHoverInteractor)
+        if (_currentXRHoverObject == interaction)
             _currentXRHoverObject = null;
     }
 
@@ -176,28 +201,33 @@ public class GameManager : Singleton<GameManager>
     {
         if (_currentXRHoverObject != null)
         {
-            _currentXRHoverObject.transform.gameObject.SetActive(false);
             tmp_Count.text = $"Count - {++_breakCount}";
-            CreateTarget();
+            RespawnTarget(_currentXRHoverObject);
         }
     }
 
     private void TestKillTarget()
     {
-        GameObject killTarget = null;
+        TestInteraction killTarget = null;
         
         foreach(var target in _targetList)
         {
             if (target.gameObject.activeSelf)
             {
-                killTarget = target.gameObject;
+                killTarget = target;
                 break;
             }
         }
         
-        killTarget?.SetActive(false);
+        killTarget?.gameObject.SetActive(false);
         tmp_Count.text = $"Count - {++_breakCount}";
-        CreateTarget();
+        RespawnTarget(killTarget);
+    }
+
+    private Vector3 TargetPosition()
+    {
+        return Camera.main.transform.position - (Quaternion.Euler(0f, _targetInfo.GetTargetAngle(respawnCount), 0f) *
+                                                 Camera.main.transform.forward * 3f);
     }
 
     IEnumerator Timer()
@@ -219,4 +249,7 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
+    
+
+    public float TargetActiveTime => targetActiveTime;
 }

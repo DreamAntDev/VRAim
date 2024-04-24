@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1610946940552547885}
   - component: {fileID: 2605227079148634358}
   - component: {fileID: 4378146200500012269}
+  - component: {fileID: 2759823797796669568}
   m_Layer: 0
   m_Name: SampleTriggerObject
   m_TagString: Untagged
@@ -310,3 +311,15 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2759823797796669568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560377200886886933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0592a7a8aa7c71145839bb1533511f4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

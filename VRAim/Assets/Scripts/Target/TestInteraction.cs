@@ -12,8 +12,8 @@ using UnityEngine.XR.Interaction.Toolkit.Inputs;
 public class TestInteraction : XRBaseInteractable
 {
     //Action
-    public Action<IXRHoverInteractor> itemHoverEnteredAction; 
-    public Action<IXRHoverInteractor> itemHoverExitedAction;
+    public Action<TestInteraction> itemHoverEnteredAction; 
+    public Action<TestInteraction> itemHoverExitedAction;
     
     protected override void OnEnable()
     {
@@ -25,12 +25,12 @@ public class TestInteraction : XRBaseInteractable
     private void OnHoverEnteredListener(HoverEnterEventArgs args)
     {
         if(itemHoverEnteredAction != null)
-            itemHoverEnteredAction.Invoke(args.interactorObject);
+            itemHoverEnteredAction.Invoke(this);
     }
     
     private void OnHoverExitedListener(HoverExitEventArgs args)
     {
         if(itemHoverExitedAction != null)
-            itemHoverExitedAction.Invoke(args.interactorObject);
+            itemHoverExitedAction.Invoke(this);
     }
 }
