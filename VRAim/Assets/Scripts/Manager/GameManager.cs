@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 public class GameManager : Singleton<GameManager>
@@ -36,7 +37,7 @@ public class GameManager : Singleton<GameManager>
     private List<TestInteraction> _targetList;
     public bool IsGameStart { get; private set; }
 
-    private GameObject _currentHoverObject;
+    private IXRHoverInteractor _currentXRHoverObject;
     private int _breakCount;
     private ITargetInfo _targetInfo;
 
@@ -91,12 +92,8 @@ public class GameManager : Singleton<GameManager>
             Debug.Log("Trigger On");
             if (IsGameStart)
             {
-                if (_currentHoverObject != null)
-                {
-                    _currentHoverObject.gameObject.SetActive(false);
-                    tmp_Count.text = $"Count - {++_breakCount}";
-                    CreateTarget();
-                }
+                OnTargetTriggerListener();
+                
             }
         });
         hand_InputAction.canceled += (ctx =>
@@ -115,7 +112,26 @@ public class GameManager : Singleton<GameManager>
         
         //FindActionByName();
     }
-    
+
+    private void Update()
+    {
+        #if UNITY_EDITOR
+        if (Input.GetKeyUp(KeyCode.Return))
+        {
+            Debug.Log("Key Input Return");
+            GameStart();
+        }
+        if (Input.GetKeyUp(KeyCode.K))
+        {
+            Debug.Log("Key Input K");
+            if (IsGameStart)
+            {
+                TestKillTarget();
+            }
+        }
+        #endif
+    }
+
     public void GameStart()
     {
         if (IsGameStart)
@@ -144,16 +160,44 @@ public class GameManager : Singleton<GameManager>
         ti.itemHoverExitedAction += OnHoverExitedListener;
         _targetList.Add(ti);
     }
-    private void OnHoverEnteredListener(GameObject obj)
+    private void OnHoverEnteredListener(IXRHoverInteractor ixrHoverInteractor)
     {
-        _currentHoverObject = obj;
-        tmp_State.text = "Hover Target - " + obj.name;
+        _currentXRHoverObject = ixrHoverInteractor;
+        tmp_State.text = "Hover Target - " + ixrHoverInteractor.transform.name;
     }
     
-    private void OnHoverExitedListener(GameObject obj)
+    private void OnHoverExitedListener(IXRHoverInteractor ixrHoverInteractor)
     {
-        if (_currentHoverObject == obj)
-            _currentHoverObject = null;
+        if (_currentXRHoverObject == ixrHoverInteractor)
+            _currentXRHoverObject = null;
+    }
+
+    private void OnTargetTriggerListener()
+    {
+        if (_currentXRHoverObject != null)
+        {
+            _currentXRHoverObject.transform.gameObject.SetActive(false);
+            tmp_Count.text = $"Count - {++_breakCount}";
+            CreateTarget();
+        }
+    }
+
+    private void TestKillTarget()
+    {
+        GameObject killTarget = null;
+        
+        foreach(var target in _targetList)
+        {
+            if (target.gameObject.activeSelf)
+            {
+                killTarget = target.gameObject;
+                break;
+            }
+        }
+        
+        killTarget?.SetActive(false);
+        tmp_Count.text = $"Count - {++_breakCount}";
+        CreateTarget();
     }
 
     IEnumerator Timer()
