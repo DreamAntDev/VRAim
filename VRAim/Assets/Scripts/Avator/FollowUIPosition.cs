@@ -14,7 +14,7 @@ public class FollowUIPosition : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 targetPosition = _mainCamera.transform.position + _mainCamera.transform.forward * 2f;
+        Vector3 targetPosition = _mainCamera.transform.position + _mainCamera.transform.forward;
         Vector3 screenPos = _mainCamera.WorldToScreenPoint(targetPosition);
 
         // 스크린 좌표를 월드 좌표로 변환하여 UI 요소의 위치를 설정
