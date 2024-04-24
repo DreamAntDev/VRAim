@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2261463756623877047}
   - component: {fileID: 1610946940552547885}
   - component: {fileID: 2605227079148634358}
-  - component: {fileID: 7854809172435349317}
+  - component: {fileID: 4378146200500012269}
   m_Layer: 0
   m_Name: SampleTriggerObject
   m_TagString: Untagged
@@ -208,7 +208,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7854809172435349317
+--- !u!114 &4378146200500012269
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8560377200886886933}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Script: {fileID: 11500000, guid: 34b68aa994ef1db47939dda61a9cbb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
